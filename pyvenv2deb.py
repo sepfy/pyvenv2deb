@@ -42,13 +42,17 @@ def generate_entry_points(input_file, output_dir):
 
   # Find console_scripts section.
   fin = open(input_file)
+  isConsoleScripts = False
   for line in fin:
+    if isConsoleScripts == True:
+      console_scripts = line.strip("\n")
+      if console_scripts.strip(" ") == "":
+        break
+      write_entry_point(console_scripts, output_dir+"usr/bin/")
+
     if line.find("console_scripts") != -1:
-      while True:
-        console_scripts = fin.readline().strip("\n")
-        if console_scripts.strip(" ") == "":
-          break
-        write_entry_point(console_scripts, output_dir+"usr/bin/")
+      isConsoleScripts = True
+
   fin.close()
 
 
